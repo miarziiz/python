@@ -1,21 +1,3 @@
-from points import Point
-
-class Rectangle:
-    """Klasa reprezentująca prostokąt na płaszczyźnie."""
-
-    def same_point(self, point1, point2):
-        """Porównaj punkty."""
-        return (point1.x == point2.x) and (point1.y == point2.y)
-
-    def greater_than(self, point2,point1):
-        return (point1.x<point2.x or point1.y<point2.y)
-
-    def __init__(self, x1, y1, x2, y2):
-        self.pt1 = Point(x1, y1)
-        self.pt2 = Point(x2, y2)
-
-    def __str__(self):       # "[(x1, y1), (x2, y2)]"
-        return "[{0}, {1}]".format(self.pt1,self.pt2)
 
     def __repr__(self):        # "Rectangle(x1, y1, x2, y2)"
         return "Rectangle({0}, {1}, {2}, {3})".format(self.pt1.x,self.pt1.y, self.pt2.x,self.pt2.y)
@@ -28,8 +10,8 @@ class Rectangle:
 
     def center(self):          # zwraca środek prostokąta
         nowy_punkt=(self.pt2-self.pt1)
-        nowy_punkt.x/=2
-        nowy_punkt.y/=2
+        nowy_punkt.x=(self.pt1.x)/2 + (self.pt2.x)/2
+        nowy_punkt.y=(self.pt1.y)/2 + (self.pt2.y)/2
         return nowy_punkt
 
     def area(self):           # pole powierzchni
@@ -38,11 +20,13 @@ class Rectangle:
         return x*y
 
     def move(self, x, y):      # przesunięcie o (x, y)
-        self.pt1.x+=x
-        self.pt2.x+=x
-        self.pt1.y += y
-        self.pt2.y += y
-        return self.pt1,self.pt2
+
+        x1=self.pt1.x+x
+        x2=self.pt2.x+x
+        y1=self.pt1.y+y
+        y2=self.pt2.y+y
+        prostokat = Rectangle(x1,y1,x2,y2)
+        return prostokat
 
 # Kod testujący moduł.
 import unittest
@@ -65,7 +49,7 @@ class TestRectangle(unittest.TestCase):
         self.assertEqual(Rectangle.area(Rectangle(1, 2, 3, 4)), 4)
 
     def test_move(self):
-        self.assertEqual(Rectangle.move(Rectangle(1,2,3,4),0,1),(Point(1,3),Point(3,5)))
+        self.assertEqual(Rectangle.move(Rectangle(1,2,3,4),0,1),(Rectangle(1,3,3,5)))
 
 if __name__ == "__main__":
     unittest.main()     # wszystkie testy
